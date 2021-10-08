@@ -170,7 +170,7 @@ public class Login extends JFrame {
 						}
 					}
 				} catch (SQLException | NullPointerException e1) {
-						JOptionPane.showMessageDialog(null, "Oh Yeah Baby.");
+						JOptionPane.showMessageDialog(null, "Connection to database failed. Please contact your system administrator.");
 					e1.printStackTrace();
 				}
 			}
@@ -204,7 +204,7 @@ public class Login extends JFrame {
 	{
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/secretshopper", "newuser", "betsy1998");
+			con = DriverManager.getConnection("jdbc:mysql://3.tcp.ngrok.io:24870/secretshopper", "root", "Betsy1998Tiny1996!!");
 			//con = DriverManager.getConnection("jdbc:mysql://192.168.1.19:3306/secretshopper", "newuser", "betsy1998");
 		}catch(CommunicationsException c)
 		{
