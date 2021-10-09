@@ -71,7 +71,7 @@ public class StudentView extends JFrame {
 	private JTextField tLName;
 	private JTextField tShopperType;
 	
-	Connection con;
+	static Connection con;
 	private FormatedTable tIncomplete;
 	private FormatedTable tComplete;
 	private FormatedTable tAvailable;
@@ -248,7 +248,7 @@ public class StudentView extends JFrame {
 		cAssignments.setToolTipText("Assignments");
 		
 		//Initializes assignment ComboBox
-		updateComboBox((DefaultComboBoxModel) cAssignments.getModel(), cAssignments, "assignment_id, location, date, time", "student_assignments", "available = 1");
+		common.DynamicCombobox.updateComboBox((DefaultComboBoxModel) cAssignments.getModel(), cAssignments, "assignment_id, location, date, time", "student_assignments", "available = 1", con);
 		
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -571,7 +571,7 @@ public class StudentView extends JFrame {
 						updateTable("student_assignments", filterAvailable, (DefaultTableModel) tAvailable.getModel(), "location, location_type, date, time, notes", "available = 1");
 						updateTable("student_assignments", filterIncomplete, (DefaultTableModel) tComplete.getModel(), "location, location_type, date, time, notes", "shopper_email = '" + email + "' AND complete = 0");
 						updateTable("student_assignments", filterComplete, (DefaultTableModel) tIncomplete.getModel(), "location, location_type, date, time, notes", "shopper_email = '" + email + "' AND complete = 1");
-						updateComboBox((DefaultComboBoxModel) cAssignments.getModel(), cAssignments,"assignment_id, location, date, time", "student_assignments", "available = 1");
+						common.DynamicCombobox.updateComboBox((DefaultComboBoxModel) cAssignments.getModel(), cAssignments,"assignment_id, location, date, time", "student_assignments", "available = 1", con);
 					} 
 					catch (SQLException | InterruptedException e1) {
 						e1.printStackTrace();
@@ -738,47 +738,6 @@ public class StudentView extends JFrame {
 				add = false;
 			}
 		}
-	}
-	/**
-	 * Updates specified DefaultComboBoxModel "model" with the query determined by "columns", "tableName", and "conditions".
-	 * @param model
-	 * @param columns
-	 * @param tableName
-	 * @param conditions
-	 */
-	public void updateComboBox(DefaultComboBoxModel model, JComboBox comboBox, String columns, String tableName, String conditions)
-	{
-		model = (DefaultComboBoxModel) comboBox.getModel();
-		model.removeAllElements();
-
-				try {
-					ResultSet result = con.createStatement().executeQuery("SELECT "+ columns + " FROM " + tableName + " WHERE "+ conditions);
-					ResultSetMetaData meta = result.getMetaData();
-					while(result.next())
-					{
-						String item = "";
-						for(int i = 1; i <= meta.getColumnCount(); i++)
-						{
-							try
-							{
-								item += result.getString(i);
-								if(i < meta.getColumnCount())
-								{
-									item += " | ";
-								}
-							}
-							catch(NullPointerException n)
-							{
-								
-							}
-						}
-						model.addElement(item);
-					}
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				comboBox.setSelectedIndex(-1);
 	}
 	/**
 	 * Create document listener to determine when filter text is changed and updates the specified table model with the query arguments.

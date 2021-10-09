@@ -24,6 +24,7 @@ import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.awt.event.MouseMotionAdapter;
 import javax.swing.JComboBox;
@@ -124,7 +125,9 @@ public class Login extends JFrame {
 		contentPane.add(lRegister);
 		
 		cShopperType = new JComboBox();
-		cShopperType.setModel(new DefaultComboBoxModel(new String[] {"Student", "Employee"}));
+		cShopperType.setToolTipText("Shopper Type");
+		//Initializes user type ComboBox
+		common.DynamicCombobox.updateComboBox((DefaultComboBoxModel) cShopperType.getModel(), cShopperType, "user_type", "user_types", "user_type_id > 0", con);
 		cShopperType.setBounds(100, 14, 164, 22);
 		contentPane.add(cShopperType);
 		
@@ -146,11 +149,11 @@ public class Login extends JFrame {
 					ResultSet result = con.createStatement().executeQuery("SELECT shopper_email, password FROM users");
 					while(result.next())
 					{
-						if(result.getString(1).equals(tEmail.getText()) && result.getString(2).equals(tPassword.getText()))
+						if(result.getString(1).equals(tEmail.getText()) && result.getString(2).equals(tPassword.getText()))//checks email and password
 						{
-							if(cShopperType.getSelectedItem().toString().equals("Student"))
+							if(cShopperType.getSelectedItem().toString().equals("ISU Dining Student Employee"))
 							{
-								JOptionPane.showMessageDialog(null, "Account found");
+								//JOptionPane.showMessageDialog(null, "Account found");//confirmation message that the account was found
 								StudentView app = new StudentView(con, tEmail.getText());
 								app.setVisible(true);
 								dispose();
@@ -162,12 +165,16 @@ public class Login extends JFrame {
 						}
 						else
 						{
-							JOptionPane.showMessageDialog(getParent(), "Account doesn't exist. Please register.");
+							JOptionPane.showMessageDialog(getParent(), "Incorrect username or password.");
 						}
 					}
-				} catch (SQLException | NullPointerException e1) {
-						JOptionPane.showMessageDialog(null, "Connection to database failed. Please contact your system administrator.");
+				} catch (SQLException e1) {
+					JOptionPane.showMessageDialog(null, "Connection to database failed. Please contact your system administrator.");
 					e1.printStackTrace();
+				} catch(NullPointerException e2)
+				{
+					JOptionPane.showMessageDialog(getParent(), "Please select a shopper type option");
+					e2.printStackTrace();
 				}
 			}
 		});
