@@ -118,7 +118,7 @@ public class StudentView extends JFrame {
 		//Initialization of main frame
 		setTitle("ISU Dining Secret Shopper");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(StudentView.class.getResource("/resources/Smol.png")));
-		ResultSet info = con.createStatement().executeQuery("SELECT shopper_email, first_name, last_name, shopper_type FROM users WHERE shopper_email = '" + email + "'");
+		ResultSet info = con.createStatement().executeQuery("SELECT shopper_email, first_name, last_name, user_type FROM users WHERE shopper_email = '" + email + "'");
 		info.next();
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setSize(1088, 534);
@@ -154,8 +154,6 @@ public class StudentView extends JFrame {
 		JPanel profile = new JPanel();
 		profile.setPreferredSize(new Dimension(0, 0));
 		profile.setBorder(new LineBorder(new Color(0, 0, 0), 0));
-		JPanel retail = new JPanel();
-		retail.setBorder(new LineBorder(new Color(0, 0, 0), 0));
 		JPanel residential = new JPanel();
 		residential.setBorder(new LineBorder(new Color(0, 0, 0), 0));
 		profileFront = new JPanel();
@@ -166,10 +164,8 @@ public class StudentView extends JFrame {
 		//Creation of tabs in TabbedPane
 		tabbedPane.addTab(null,profile);
 		tabbedPane.setTabComponentAt(0, new HeaderLabel(new Dimension(70, 20), "Home", new Font("Arial", Font.BOLD, 16), cardinal, new ImageIcon(new ImageIcon(StudentView.class.getResource("/resources/home.png")).getImage().getScaledInstance(16, 16, Image.SCALE_DEFAULT))));
-		tabbedPane.addTab(null, retail);
-		tabbedPane.setTabComponentAt(1, new HeaderLabel(new Dimension(70, 20), "Retail", new Font("Arial", Font.BOLD, 16), cardinal, new ImageIcon(new ImageIcon(StudentView.class.getResource("/resources/form.png")).getImage().getScaledInstance(16, 16, Image.SCALE_DEFAULT))));
 		tabbedPane.addTab(null, residential);
-		tabbedPane.setTabComponentAt(2, new HeaderLabel(new Dimension(110, 20), "Residential", new Font("Arial", Font.BOLD, 16), cardinal, new ImageIcon(new ImageIcon(StudentView.class.getResource("/resources/form.png")).getImage().getScaledInstance(16, 16, Image.SCALE_DEFAULT))));
+		tabbedPane.setTabComponentAt(1, new HeaderLabel(new Dimension(110, 20), "Residential", new Font("Arial", Font.BOLD, 16), cardinal, new ImageIcon(new ImageIcon(StudentView.class.getResource("/resources/form.png")).getImage().getScaledInstance(16, 16, Image.SCALE_DEFAULT))));
 		
 		//Table creation
 		tIncomplete = new FormatedTable();
@@ -202,10 +198,6 @@ public class StudentView extends JFrame {
 		HeaderLabel lLastName = new HeaderLabel("Last Name:", new Font("Arial", Font.BOLD, 12), dark_cardinal);
 		HeaderLabel lShopperType = new HeaderLabel("Shopper Type:", new Font("Arial", Font.BOLD, 12), dark_cardinal);
 		HeaderLabel lPickUp = new HeaderLabel("Pick Up:", new Font("Arial", Font.BOLD, 12), dark_cardinal);
-		HeaderLabel retailHeaderLabel = new HeaderLabel(new Dimension(300,100), "Retail Secret Shopper Form", new Font("Arial", Font.BOLD, 28), cardinal, new ImageIcon(new ImageIcon(StudentView.class.getResource("/resources/dininglogo.png")).getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
-		retailHeaderLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		retailHeaderLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
-		retailHeaderLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		HeaderLabel residentialHeaderLabel = new HeaderLabel(new Dimension(400,100), "Residential Secret Shopper Form", new Font("Arial", Font.BOLD, 28), cardinal, new ImageIcon(new ImageIcon(StudentView.class.getResource("/resources/dininglogo.png")).getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
 		residentialHeaderLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		residentialHeaderLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
@@ -420,67 +412,8 @@ public class StudentView extends JFrame {
 		);
 		profile.setLayout(gl_profile);
 		
-		JPanel retailHeaderPanel = new JPanel();
-		
-		JScrollPane scrollPane = new JScrollPane();
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////Retail Pane Layout//////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-		GroupLayout gl_retail = new GroupLayout(retail);
-		gl_retail.setHorizontalGroup(
-			gl_retail.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_retail.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(retailHeaderPanel, GroupLayout.PREFERRED_SIZE, 1000, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 1000, GroupLayout.PREFERRED_SIZE)
-					.addGap(19))
-		);
-		gl_retail.setVerticalGroup(
-			gl_retail.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_retail.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_retail.createParallelGroup(Alignment.LEADING)
-						.addComponent(retailHeaderPanel, GroupLayout.PREFERRED_SIZE, 1050, GroupLayout.PREFERRED_SIZE)
-						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 1050, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap())
-		);
-		retailHeaderPanel.setLayout(new GridLayout(1, 0, 0, 0));
-		
-		
-		retailHeaderPanel.add(retailHeaderLabel);
-		
-		JPanel retailFormPanel = new JPanel();
-		scrollPane.setViewportView(retailFormPanel);
-		
-		
-		FormLayout retailFormLayout = new FormLayout(new ColumnSpec[] {
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
-				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,},
-			new RowSpec[] {});
-		retailFormPanel.setLayout(retailFormLayout);
-		
 		//Builds the retail form from database
 		ResultSet retailQuestionsResult = con.createStatement().executeQuery("SELECT * FROM retail_question_registry");
-		buildForm(retailQuestionsResult, retailFormLayout, retailFormPanel, retailSubmit, retailFormQuestionLabels, retailFormQuestionOptions, retailFormButtonGroups);
-		
-		retail.setLayout(gl_retail);
 		
 		contentPane.setLayout(gl_contentPane);
 		
@@ -498,19 +431,19 @@ public class StudentView extends JFrame {
 			gl_residential.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_residential.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(residentialHeaderPanel, GroupLayout.PREFERRED_SIZE, 1000, GroupLayout.PREFERRED_SIZE)
+					.addComponent(residentialHeaderPanel, GroupLayout.DEFAULT_SIZE, 882, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(resScrollPane, GroupLayout.PREFERRED_SIZE, 1000, GroupLayout.PREFERRED_SIZE)
-					.addGap(19))
+					.addComponent(resScrollPane, GroupLayout.PREFERRED_SIZE, 611, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
 		);
 		gl_residential.setVerticalGroup(
 			gl_residential.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_residential.createSequentialGroup()
+				.addGroup(Alignment.TRAILING, gl_residential.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_residential.createParallelGroup(Alignment.LEADING)
-						.addComponent(resScrollPane, GroupLayout.PREFERRED_SIZE, 1050, GroupLayout.PREFERRED_SIZE)
-						.addComponent(residentialHeaderPanel, GroupLayout.PREFERRED_SIZE, 1050, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap())
+					.addGroup(gl_residential.createParallelGroup(Alignment.TRAILING)
+						.addComponent(resScrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 768, Short.MAX_VALUE)
+						.addComponent(residentialHeaderPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 1050, Short.MAX_VALUE))
+					.addGap(0))
 		);
 		residential.setLayout(gl_residential);
 		
@@ -805,7 +738,7 @@ public class StudentView extends JFrame {
 		
 //		String str = buttonGroup.getSelection().getActionCommand().toString();
 		
-		panel.add(new JLabel("                       "), "8, "+(6+6*(i-1))+", 8, 1");
+		panel.add(new JLabel("                       "), "8, "+(4+6*(i-1))+", 8, 1");
 	}
 	public void buildForm(ResultSet questionsResult, FormLayout formLayout, JPanel formPanel, JButton submit, ArrayList<JLabel> formQuestionLabels, ArrayList<JRadioButton[]> formQuestionOptions, ArrayList<ButtonGroup> formButtonGroups ) throws SQLException
 	{
@@ -833,15 +766,11 @@ public class StudentView extends JFrame {
 			addFormItem(formPanel, i, questions.get(i-1), formQuestionLabels, formQuestionOptions, formButtonGroups);
 			rowCounter += 6;
 		}
-		formLayout.appendRow(FormSpecs.RELATED_GAP_ROWSPEC);
-		formLayout.appendRow(FormSpecs.DEFAULT_ROWSPEC);
-		formLayout.appendRow(FormSpecs.RELATED_GAP_ROWSPEC);
-		formLayout.appendRow(FormSpecs.DEFAULT_ROWSPEC);
 		
 		submit.setText("Submit Form");
 		if(1 == 1)
 		{
-			formPanel.add(submit, 8+","+ (rowCounter));
+			formPanel.add(submit, 6+","+ (rowCounter));
 			formPanel.add(new JLabel("                       "), "8, "+(rowCounter+2));
 		}
 	}
